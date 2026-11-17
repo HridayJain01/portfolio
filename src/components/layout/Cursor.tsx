@@ -22,6 +22,7 @@ export default function Cursor() {
     const html = document.documentElement;
     html.classList.add("has-cursor");
 
+    let isHidden = true;
     const rx = gsap.quickTo(r, "x", { duration: 0.55, ease: "power3" });
     const ry = gsap.quickTo(r, "y", { duration: 0.55, ease: "power3" });
 
@@ -30,7 +31,10 @@ export default function Cursor() {
       gsap.set(d, { x: e.clientX, y: e.clientY });
       rx(e.clientX);
       ry(e.clientY);
-      setHidden(false);
+      if (isHidden) {
+        isHidden = false;
+        setHidden(false);
+      }
     };
 
     const over = (e: PointerEvent) => {
@@ -48,8 +52,14 @@ export default function Cursor() {
       setState("default");
     };
 
-    const leave = () => setHidden(true);
-    const enter = () => setHidden(false);
+    const leave = () => {
+      isHidden = true;
+      setHidden(true);
+    };
+    const enter = () => {
+      isHidden = false;
+      setHidden(false);
+    };
 
     window.addEventListener("pointermove", move, { passive: true });
     document.addEventListener("pointerover", over, { passive: true });

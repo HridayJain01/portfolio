@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { gsap } from "@/lib/gsap";
-import { getLenis } from "@/lib/lenis";
+import { isProgrammaticScroll, setScrollLock } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
 import TLink from "@/components/ui/TLink";
 import Roll from "@/components/ui/Roll";
@@ -28,25 +28,38 @@ export default function Nav() {
   const tl = useRef<gsap.core.Timeline | null>(null);
   const toggleBtn = useRef<HTMLButtonElement>(null);
 
-  // hide on scroll down, show on scroll up
+  // hide on scroll down, show on scroll up (state only changes when it actually flips)
   useEffect(() => {
     let lastY = window.scrollY;
+    let isHidden = false;
+    let isScrolled = false;
+    const hide = (v: boolean) => {
+      if (v !== isHidden) {
+        isHidden = v;
+        setHidden(v);
+      }
+    };
     const onScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > 40);
-      // big jumps are programmatic (anchor links, route changes): keep the nav visible
-      if (Math.abs(y - lastY) > 400) setHidden(false);
-      else if (y > lastY + 6 && y > 200) setHidden(true);
-      else if (y < lastY - 6 || y < 200) setHidden(false);
+      if (y > 40 !== isScrolled) {
+        isScrolled = y > 40;
+        setScrolled(isScrolled);
+      }
+      // jumps and link-driven glides (anchor links, route changes): keep the nav visible
+      if (Math.abs(y - lastY) > 400 || isProgrammaticScroll()) hide(false);
+      else if (y > lastY + 6 && y > 200) hide(true);
+      else if (y < lastY - 6 || y < 200) hide(false);
       lastY = y;
     };
     // reveal when the cursor approaches the top edge
     const onPointer = (e: PointerEvent) => {
-      if (e.pointerType === "mouse" && e.clientY < 90) setHidden(false);
+      if (e.pointerType === "mouse" && e.clientY < 90) hide(false);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onPointer, { passive: true });
+    const init = requestAnimationFrame(onScroll);
     return () => {
+      cancelAnimationFrame(init);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointer);
     };
@@ -77,12 +90,12 @@ export default function Nav() {
     const t = tl.current;
     if (!t) return;
     if (open) {
-      getLenis()?.stop();
+      setScrollLock("menu", true);
       t.timeScale(1).play();
       const first = overlay.current?.querySelector<HTMLElement>("a");
       window.setTimeout(() => first?.focus({ preventScroll: true }), 400);
     } else {
-      getLenis()?.start();
+      setScrollLock("menu", false);
       t.timeScale(1.6).reverse();
     }
   }, [open]);
@@ -112,7 +125,7 @@ export default function Nav() {
         <div
           aria-hidden="true"
           className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 h-[calc(var(--nav-h)+2.5rem)] bg-gradient-to-b from-ink/85 via-ink/50 to-transparent backdrop-blur-[2px] transition-opacity duration-700 [mask-image:linear-gradient(to_bottom,black_55%,transparent)]",
+            "pointer-events-none absolute inset-x-0 top-0 h-[calc(var(--nav-h)+2.5rem)] bg-gradient-to-b from-ink/90 via-ink/60 to-transparent transition-opacity duration-700",
             scrolled && !open ? "opacity-100" : "opacity-0",
           )}
         />

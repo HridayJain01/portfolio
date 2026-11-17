@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ComponentProps, MouseEvent } from "react";
 import { coverScreen } from "@/lib/curtain";
-import { scrollToTarget } from "@/lib/lenis";
+import { scrollToTarget } from "@/lib/scroll";
 
 type Props = ComponentProps<typeof Link> & {
   /** Text shown on the page-transition curtain. */

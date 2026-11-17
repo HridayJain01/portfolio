@@ -22,11 +22,11 @@ export default function GenerativeArt({
 }) {
   const rand = seeded(seed);
   const blobs = [
-    { color: accent, size: 48 + rand() * 18, x: 40 + rand() * 30, y: -15 + rand() * 25, dur: 18 + rand() * 8 },
-    { color: "#6d4dff", size: 40 + rand() * 18, x: -10 + rand() * 25, y: 35 + rand() * 30, dur: 22 + rand() * 8 },
+    { color: accent, size: 62 + rand() * 18, x: 40 + rand() * 30, y: -15 + rand() * 25, dur: 18 + rand() * 8 },
+    { color: "#6d4dff", size: 54 + rand() * 18, x: -10 + rand() * 25, y: 35 + rand() * 30, dur: 22 + rand() * 8 },
     {
       color: `color-mix(in oklab, ${accent} 55%, #ffffff)`,
-      size: 26 + rand() * 14,
+      size: 36 + rand() * 14,
       x: 25 + rand() * 40,
       y: 45 + rand() * 25,
       dur: 26 + rand() * 8,
@@ -44,7 +44,8 @@ export default function GenerativeArt({
             width: `${b.size}%`,
             left: `${b.x}%`,
             top: `${b.y}%`,
-            background: `radial-gradient(circle at 35% 35%, ${b.color}, transparent 66%)`,
+            // closest-side fades to fully transparent at the edge: soft glow, no blur filter needed
+            background: `radial-gradient(closest-side, ${b.color} 0%, color-mix(in oklab, ${b.color} 55%, transparent) 45%, transparent 100%)`,
             opacity: i === 2 ? 0.45 : 0.85,
             animationDuration: `${b.dur}s`,
             animationDelay: `${-i * 5}s`,
@@ -100,7 +101,7 @@ export default function GenerativeArt({
       )}
 
       {label && (
-        <span className="eyebrow absolute bottom-4 right-4 flex items-center gap-2 rounded-full border border-white/15 bg-black/30 px-3 py-2 text-bone/70 backdrop-blur-md">
+        <span className="eyebrow absolute bottom-4 right-4 flex items-center gap-2 rounded-full border border-white/15 bg-black/50 px-3 py-2 text-bone/70">
           <span className="size-1.5 rounded-full" style={{ background: accent }} />
           {label}
         </span>

@@ -17,23 +17,25 @@ export default function Counter({
   const ref = useRef<HTMLSpanElement>(null);
 
   useGSAP(
-    () => {
+    (_ctx, contextSafe) => {
       const el = ref.current;
-      if (!el) return;
+      if (!el || !contextSafe) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const obj = { v: 0 };
       el.textContent = `0${suffix}`;
-      const cancel = gate.when(() => {
-        gsap.to(obj, {
-          v: value,
-          duration: 2.2,
-          ease: "expo.out",
-          scrollTrigger: { trigger: el, start: "top 90%", once: true },
-          onUpdate: () => {
-            el.textContent = `${Math.round(obj.v)}${suffix}`;
-          },
-        });
-      });
+      const cancel = gate.when(
+        contextSafe(() => {
+          gsap.to(obj, {
+            v: value,
+            duration: 2.2,
+            ease: "expo.out",
+            scrollTrigger: { trigger: el, start: "top 90%", once: true },
+            onUpdate: () => {
+              el.textContent = `${Math.round(obj.v)}${suffix}`;
+            },
+          });
+        }),
+      );
       return () => {
         cancel();
         el.textContent = `${value}${suffix}`;

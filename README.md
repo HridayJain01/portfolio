@@ -4,8 +4,8 @@ A cinematic, motion-rich personal portfolio built with **Next.js 16**, **Tailwin
 
 - **Liquid-satin WebGL hero** that reacts to the cursor, with a kinetic headline and an inline showreel pill
 - **First-visit preloader** and **page-transition curtain** between every route
-- **Smooth scrolling** (Lenis) with scroll-driven reveals, scrubbed text, parallax and counters
-- **Stacked project cards**, each playing its own **demo video**, linking to full **case-study pages** with a custom video player (play with sound, scrub, mute, fullscreen, keyboard shortcuts) and a grid of short feature clips
+- **Native, jank-free scrolling** with scroll-driven reveals, scrubbed text, parallax and counters (no scroll hijacking, so it stays smooth on any device)
+- **Staggered project grid**, each card playing its own **demo video**, linking to full **case-study pages** with a custom video player (play with sound, scrub, mute, fullscreen, keyboard shortcuts) and a grid of short feature clips
 - **About**, **Experience** (expandable timeline + résumé download), **Writing** (Markdown blog) and a **Contact** footer with copy-to-clipboard email
 - Magnetic buttons, custom cursor, film grain, rolling-text hovers and a velocity-reactive marquee
 - Accessible by default: semantic HTML, keyboard support, a skip link, visible focus, and full **`prefers-reduced-motion`** support (animations, autoplay and the preloader switch off)
@@ -96,7 +96,7 @@ Your **Markdown** here.
 
 - **Colours & fonts:** design tokens are at the top of `src/app/globals.css` (`--color-accent`, `--color-ink`, …). Fonts are loaded in `src/app/layout.tsx` (Geist, Geist Mono, Instrument Serif).
 - **Hero shader:** `src/components/media/ShaderCanvas.tsx`. The palette (`ink`, `indigo`, `violet`, `ember`) and fold scale (`p * 0.52`) are easy to tweak.
-- **Motion:** shared timing lives in GSAP timelines inside each component. Global smooth-scroll feel is the `lerp` value in `src/components/layout/SmoothScroll.tsx`.
+- **Motion:** shared timing lives in GSAP timelines inside each component. Scroll helpers (anchor scrolling, scroll locks) are in `src/lib/scroll.ts`.
 
 ## Project structure
 

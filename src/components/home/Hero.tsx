@@ -13,7 +13,16 @@ import Roll from "@/components/ui/Roll";
 import { ArrowDown, ArrowUpRight } from "@/components/ui/icons";
 import { site } from "@/content/site";
 
-export default function Hero({ projectCount }: { projectCount: number }) {
+export default function Hero({
+  projectCount,
+  showreel,
+  showreelPoster,
+}: {
+  projectCount: number;
+  /** Resolved on the server: undefined when the file isn't in /public yet. */
+  showreel?: string;
+  showreelPoster?: string;
+}) {
   const root = useRef<HTMLElement>(null);
   const title = site.hero.lines.map(plain).join(" ");
 
@@ -63,7 +72,7 @@ export default function Hero({ projectCount }: { projectCount: number }) {
       className="relative flex min-h-svh flex-col overflow-hidden pt-[var(--nav-h)]"
     >
       {/* WebGL background */}
-      <div className="hero-bg absolute inset-0 -z-0">
+      <div className="hero-bg absolute inset-0 -z-0 will-change-transform">
         <div className="hero-canvas intro-fade absolute inset-0">
           <ShaderCanvas />
         </div>
@@ -72,13 +81,16 @@ export default function Hero({ projectCount }: { projectCount: number }) {
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent" />
       </div>
 
-      <div className="container-x relative flex flex-1 flex-col justify-center py-10">
-        <div className="hero-fade intro-fade eyebrow mb-8 flex items-center gap-3 text-bone/70 md:mb-10">
+      <div className="container-x relative flex flex-1 flex-col justify-end pb-12 pt-8 md:justify-center md:py-10">
+        <div className="hero-fade intro-fade eyebrow mb-6 flex items-center gap-3 text-bone/70 md:mb-10">
           <span className="h-px w-10 bg-bone/40" />
           {site.role}
         </div>
 
-        <h1 aria-label={title} className="hero-title headline text-[clamp(3.1rem,10.4vw,12.5rem)]">
+        <h1
+          aria-label={title}
+          className="hero-title headline text-[clamp(3.1rem,10.4vw,12.5rem)] will-change-[transform,opacity]"
+        >
           {site.hero.lines.map((line, li) => {
             const tokens = tokenize(line);
             return (
@@ -93,8 +105,9 @@ export default function Hero({ projectCount }: { projectCount: number }) {
                         className="hero-reel intro-clip relative mx-[0.04em] inline-block h-[0.74em] w-[1.75em] translate-y-[0.02em] overflow-hidden rounded-full align-baseline ring-1 ring-white/15"
                       >
                         <DemoVideo
-                          src={site.hero.showreel}
-                          poster={site.hero.showreelPoster}
+                          src={showreel}
+                          poster={showreelPoster}
+                          preload="auto"
                           accent="#ff6b3d"
                           seed="showreel"
                           variant="plain"
@@ -116,14 +129,14 @@ export default function Hero({ projectCount }: { projectCount: number }) {
           })}
         </h1>
 
-        <div className="mt-10 grid gap-8 md:mt-14 md:grid-cols-12 md:items-end">
-          <p className="hero-fade intro-fade max-w-md text-[clamp(1.05rem,1.35vw,1.3rem)] leading-relaxed text-bone/75 md:col-span-6 lg:col-span-4">
+        <div className="mt-7 grid gap-6 md:mt-14 md:grid-cols-12 md:items-end md:gap-8">
+          <p className="hero-fade intro-fade max-w-md text-[clamp(1rem,1.35vw,1.3rem)] leading-relaxed text-bone/75 md:col-span-6 lg:col-span-4">
             {site.hero.intro}
           </p>
-          <div className="hero-fade intro-fade flex flex-wrap items-center gap-3 md:col-span-6 md:justify-end lg:col-span-8">
+          <div className="hero-fade intro-fade flex items-center gap-2 sm:gap-3 md:col-span-6 md:justify-end lg:col-span-8">
             <Magnetic>
               <TLink href="#work" className="btn-pill is-solid roll-trigger" data-cursor-label="Explore">
-                <Roll>See selected work</Roll>
+                <Roll>View work</Roll>
                 <ArrowDown className="size-4" />
               </TLink>
             </Magnetic>
@@ -137,7 +150,7 @@ export default function Hero({ projectCount }: { projectCount: number }) {
         </div>
       </div>
 
-      <div className="hero-bottom container-x relative pb-7">
+      <div className="hero-bottom container-x relative hidden pb-7 sm:block">
         <div className="hero-fade intro-fade eyebrow flex items-center justify-between gap-6 border-t border-white/10 pt-5 text-bone/60">
           <span className="flex items-center gap-3">
             <span className="relative block h-8 w-px overflow-hidden bg-white/15">

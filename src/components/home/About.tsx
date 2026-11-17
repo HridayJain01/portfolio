@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { site } from "@/content/site";
+import { resolveMedia } from "@/lib/media";
 import SectionLabel from "@/components/ui/SectionLabel";
 import ScrubText from "@/components/ui/ScrubText";
 import Reveal from "@/components/ui/Reveal";
@@ -7,63 +9,89 @@ import Counter from "@/components/ui/Counter";
 import Portrait from "./Portrait";
 import { pad } from "@/lib/utils";
 
+/** Small round portrait used on phones in place of the tall desktop portrait. */
+function Avatar({ src }: { src?: string }) {
+  return (
+    <span className="relative block size-12 overflow-hidden rounded-full ring-1 ring-line">
+      {src ? (
+        <Image src={src} alt={`Portrait of ${site.name}`} fill sizes="48px" className="object-cover" />
+      ) : (
+        <span className="grid size-full place-items-center bg-[radial-gradient(circle_at_30%_25%,#ff6b3d,#6d4dff_60%,#16161a)] serif-em text-lg text-bone">
+          {site.monogram}
+        </span>
+      )}
+    </span>
+  );
+}
+
 export default function About() {
   const { about } = site;
+  const portrait = resolveMedia(about.portrait);
   return (
-    <section id="about" aria-labelledby="about-title" className="container-x py-[clamp(6rem,12vw,11rem)]">
-      <SectionLabel index="02" label="About" />
+    <section id="about" aria-labelledby="about-title" className="container-x section-pad">
+      <div className="flex items-center justify-between gap-4">
+        <SectionLabel index="02" label="About" />
+        <span className="lg:hidden">
+          <Avatar src={portrait} />
+        </span>
+      </div>
       <h2 id="about-title" className="sr-only">
         About
       </h2>
 
-      <div className="mt-12 grid gap-14 lg:grid-cols-12 lg:gap-10">
+      <div className="mt-6 grid gap-14 lg:mt-12 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-8">
           <ScrubText
             text={about.statement}
-            className="text-[clamp(1.75rem,3.7vw,3.6rem)] font-normal leading-[1.12] tracking-[-0.025em]"
+            className="text-[clamp(1.4rem,3.7vw,3.6rem)] font-normal leading-[1.15] tracking-[-0.025em]"
           />
         </div>
-        <div className="lg:col-span-4 lg:pl-6">
-          <Portrait src={about.portrait} monogram={site.monogram} name={site.name} caption={site.location} />
+        <div className="hidden lg:col-span-4 lg:block lg:pl-6">
+          <Portrait src={portrait} monogram={site.monogram} name={site.name} caption={site.location} />
         </div>
       </div>
 
-      <Reveal className="mt-[clamp(4rem,9vw,8rem)] grid border-t border-line sm:grid-cols-3" stagger={0.12}>
+      <Reveal
+        className="mt-10 grid grid-cols-3 border-y border-line lg:mt-[clamp(4rem,9vw,8rem)] lg:border-b-0"
+        stagger={0.12}
+      >
         {about.stats.map((s) => (
           <div
             key={s.label}
             data-reveal-item
-            className="border-b border-line py-8 sm:border-b-0 sm:border-r sm:px-8 sm:first:pl-0 sm:last:border-r-0"
+            className="border-r border-line px-3 py-5 first:pl-0 last:border-r-0 sm:px-8 sm:py-8"
           >
             <Counter
               value={s.value}
               suffix={s.suffix}
-              className="headline block text-[clamp(4rem,8vw,7.5rem)] tabular-nums"
+              className="headline block text-[clamp(2.1rem,8vw,7.5rem)] tabular-nums"
             />
-            <p className="eyebrow mt-4 text-mute">{s.label}</p>
+            <p className="eyebrow mt-2 text-[0.6rem] leading-snug text-mute sm:mt-4 sm:text-[0.72rem]">{s.label}</p>
           </div>
         ))}
       </Reveal>
 
-      <div className="mt-[clamp(5rem,10vw,9rem)] grid gap-12 lg:grid-cols-12">
+      <div className="mt-12 grid gap-5 lg:mt-[clamp(5rem,10vw,9rem)] lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-4">
           <p className="eyebrow text-mute">What I do</p>
           <RevealText
             as="h3"
             text="Design, code & *everything* in between."
-            className="headline mt-6 max-w-sm text-[clamp(2.25rem,3.6vw,3.5rem)] leading-[1]"
+            className="headline mt-6 hidden max-w-sm text-[clamp(2.25rem,3.6vw,3.5rem)] leading-[1] lg:block"
           />
         </div>
         <Reveal as="ul" className="border-t border-line lg:col-span-8" stagger={0.1}>
           {about.services.map((s, i) => (
             <li key={s.title} data-reveal-item className="row group relative isolate border-b border-line">
               <span className="row-fill" />
-              <div className="grid grid-cols-12 items-baseline gap-4 px-2 py-7 transition-[padding] duration-700 ease-out-expo md:group-hover:px-6">
-                <span className="row-mute eyebrow col-span-2 text-dim md:col-span-1">{pad(i + 1)}</span>
-                <span className="col-span-10 text-[clamp(1.6rem,3vw,2.75rem)] font-medium leading-[1.02] tracking-[-0.03em] md:col-span-5">
+              <div className="grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-1 py-4 transition-[padding] duration-700 ease-out-expo md:grid-cols-12 md:gap-4 md:px-2 md:py-7 md:group-hover:px-6">
+                <span className="row-mute eyebrow text-dim md:col-span-1">{pad(i + 1)}</span>
+                <span className="text-[clamp(1.25rem,3vw,2.75rem)] font-medium leading-[1.05] tracking-[-0.03em] md:col-span-5">
                   {s.title}
                 </span>
-                <span className="row-mute col-span-12 text-mute md:col-span-6 md:col-start-7">{s.text}</span>
+                <span className="row-mute col-start-2 text-[0.9rem] leading-snug text-mute md:col-span-6 md:col-start-7 md:text-base">
+                  {s.text}
+                </span>
               </div>
             </li>
           ))}

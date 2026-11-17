@@ -11,17 +11,17 @@ import { ArrowUpRight } from "@/components/ui/icons";
 export default function Writing({ posts }: { posts: PostMeta[] }) {
   if (!posts.length) return null;
   return (
-    <section id="writing" aria-labelledby="writing-title" className="container-x py-[clamp(6rem,12vw,11rem)]">
-      <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-        <div className="lg:col-span-8">
+    <section id="writing" aria-labelledby="writing-title" className="container-x section-pad">
+      <div className="flex items-end justify-between gap-6">
+        <div>
           <SectionLabel index="04" label="Writing" />
           <RevealText
             id="writing-title"
             text="Notes on *craft*"
-            className="headline mt-8 text-[clamp(3.25rem,9vw,9rem)]"
+            className="headline mt-5 text-[clamp(2.5rem,8.5vw,9rem)] md:mt-8"
           />
         </div>
-        <Reveal className="flex lg:col-span-4 lg:justify-end">
+        <Reveal className="hidden md:block">
           <Magnetic strength={0.3}>
             <TLink href="/blog" transitionLabel="Writing" className="btn-pill roll-trigger">
               <Roll>All writing</Roll>
@@ -30,7 +30,14 @@ export default function Writing({ posts }: { posts: PostMeta[] }) {
           </Magnetic>
         </Reveal>
       </div>
-      <PostList posts={posts} className="mt-[clamp(3rem,6vw,5rem)]" />
+      <PostList posts={posts} className="mt-8 md:mt-[clamp(3rem,6vw,5rem)]" />
+      <TLink
+        href="/blog"
+        transitionLabel="Writing"
+        className="mt-6 inline-flex items-center gap-2 text-bone/85 md:hidden"
+      >
+        All writing <ArrowUpRight className="size-4" />
+      </TLink>
     </section>
   );
 }

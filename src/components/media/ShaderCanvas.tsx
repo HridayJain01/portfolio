@@ -51,7 +51,7 @@ float fbm(vec2 p) {
   float v = 0.0;
   float a = 0.5;
   mat2 r = mat2(0.8, 0.6, -0.6, 0.8);
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 3; i++) {
     v += a * snoise(p);
     p = r * p * 2.03 + vec2(1.7, 9.2);
     a *= 0.5;
@@ -181,7 +181,8 @@ export default function ShaderCanvas({ className }: { className?: string }) {
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
-    const scale = coarse ? 0.5 : 0.62;
+    // the image is soft by nature, so render small and let CSS upscale it
+    const scale = coarse ? 0.4 : 0.5;
 
     const mouse = { x: 0.68, y: 0.6, tx: 0.68, ty: 0.6, h: 0, th: 0 };
     let raf = 0;
@@ -215,10 +216,12 @@ export default function ShaderCanvas({ className }: { className?: string }) {
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
+    let frame = 0;
     const loop = (now: number) => {
       raf = 0;
       if (!visible || document.hidden) return;
-      draw(now);
+      // phones: 30fps is plenty for slow-moving satin and halves the GPU work
+      if (!coarse || frame++ % 2 === 0) draw(now);
       raf = requestAnimationFrame(loop);
     };
 

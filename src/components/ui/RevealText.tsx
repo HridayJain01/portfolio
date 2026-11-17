@@ -31,30 +31,34 @@ export default function RevealText({
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(
-    () => {
+    (_ctx, contextSafe) => {
       const el = ref.current;
-      if (!el) return;
+      if (!el || !contextSafe) return;
       const words = el.querySelectorAll(".mask-inner");
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
         // y:0 resets any px offset parsed from the CSS pre-hide state (.intro-word)
         gsap.set(words, { y: 0, yPercent: 115 });
-        const play = () =>
-          gsap.to(words, { y: 0, yPercent: 0, duration: 1.4, stagger, delay, ease: "expo.out", overwrite: true });
+        // contextSafe: animations created later (when the gate opens) are still cleaned up with the component
+        const play = contextSafe(() =>
+          gsap.to(words, { y: 0, yPercent: 0, duration: 1.4, stagger, delay, ease: "expo.out", overwrite: true }),
+        );
         let cancel = () => {};
         if (mode === "intro") {
           cancel = gate.when(play);
         } else {
-          cancel = gate.when(() => {
-            gsap.to(words, {
-              yPercent: 0,
-              duration: 1.3,
-              stagger,
-              delay,
-              ease: "expo.out",
-              scrollTrigger: { trigger: el, start: "top 90%", once: true },
-            });
-          });
+          cancel = gate.when(
+            contextSafe(() => {
+              gsap.to(words, {
+                yPercent: 0,
+                duration: 1.3,
+                stagger,
+                delay,
+                ease: "expo.out",
+                scrollTrigger: { trigger: el, start: "top 90%", once: true },
+              });
+            }),
+          );
         }
         return () => cancel();
       });

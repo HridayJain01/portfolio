@@ -31,8 +31,8 @@ export default function GiantName({ name }: { name: string }) {
   );
 
   return (
-    <div ref={ref} className="my-6 overflow-hidden md:my-8" aria-hidden="true">
-      <div className="giant">
+    <div ref={ref} className="my-4 overflow-hidden md:my-8" aria-hidden="true">
+      <div className="giant will-change-transform">
         <FitText
           text={name}
           className="headline select-none bg-gradient-to-b from-bone to-bone/25 bg-clip-text text-transparent"

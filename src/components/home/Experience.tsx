@@ -13,17 +13,17 @@ export default function Experience() {
   const hasResume = fs.existsSync(path.join(process.cwd(), "public", site.resume.replace(/^\//, "")));
 
   return (
-    <section id="experience" aria-labelledby="experience-title" className="container-x py-[clamp(6rem,12vw,11rem)]">
-      <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-        <div className="lg:col-span-8">
+    <section id="experience" aria-labelledby="experience-title" className="container-x section-pad">
+      <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+        <div>
           <SectionLabel index="03" label="Experience" />
           <RevealText
             id="experience-title"
             text="Places I've left *a mark*"
-            className="headline mt-8 text-[clamp(3.25rem,9vw,9rem)]"
+            className="headline mt-5 text-[clamp(2.5rem,8.5vw,9rem)] md:mt-8"
           />
         </div>
-        <Reveal className="flex lg:col-span-4 lg:justify-end">
+        <Reveal>
           <Magnetic strength={0.3}>
             {hasResume ? (
               <a href={site.resume} download className="btn-pill is-solid roll-trigger" data-cursor-label="PDF">
@@ -43,14 +43,14 @@ export default function Experience() {
 
       <ExperienceList roles={experience} />
 
-      <Reveal className="mt-[clamp(4rem,8vw,7rem)] grid gap-8 lg:grid-cols-12">
+      <Reveal className="mt-10 grid gap-4 md:mt-[clamp(4rem,8vw,7rem)] lg:grid-cols-12 lg:gap-8">
         <p className="eyebrow text-mute lg:col-span-4">Toolbox</p>
-        <ul className="flex flex-wrap gap-2.5 lg:col-span-8">
+        <ul className="flex flex-wrap gap-2 lg:col-span-8 lg:gap-2.5">
           {site.tools.map((t) => (
             <li
               key={t}
               data-reveal-item
-              className="rounded-full border border-line px-4 py-2.5 text-[0.95rem] text-bone/85 transition-colors duration-500 hover:border-bone hover:bg-bone hover:text-ink"
+              className="rounded-full border border-line px-3 py-1.5 text-[0.85rem] text-bone/85 transition-colors duration-500 hover:border-bone hover:bg-bone hover:text-ink md:px-4 md:py-2.5 md:text-[0.95rem]"
             >
               {t}
             </li>

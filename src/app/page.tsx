@@ -1,6 +1,7 @@
 import { site } from "@/content/site";
 import { projects } from "@/content/projects";
 import { getAllPosts } from "@/lib/posts";
+import { resolveMedia } from "@/lib/media";
 import Hero from "@/components/home/Hero";
 import Marquee from "@/components/home/Marquee";
 import Work from "@/components/home/Work";
@@ -12,7 +13,11 @@ export default function Home() {
   const posts = getAllPosts().slice(0, 3);
   return (
     <>
-      <Hero projectCount={projects.length} />
+      <Hero
+        projectCount={projects.length}
+        showreel={resolveMedia(site.hero.showreel)}
+        showreelPoster={resolveMedia(site.hero.showreelPoster)}
+      />
       <Marquee items={site.marquee} sub={site.tools} />
       <Work projects={projects} />
       <About />

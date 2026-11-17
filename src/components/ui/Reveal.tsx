@@ -29,25 +29,27 @@ export default function Reveal({
   const ref = useRef<HTMLDivElement>(null);
 
   useGSAP(
-    () => {
+    (_ctx, contextSafe) => {
       const el = ref.current;
-      if (!el) return;
+      if (!el || !contextSafe) return;
       const items = el.querySelectorAll("[data-reveal-item]");
       const targets = items.length ? items : [el];
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
         gsap.set(targets, { opacity: 0, y });
-        const cancel = gate.when(() => {
-          gsap.to(targets, {
-            opacity: 1,
-            y: 0,
-            duration: 1.4,
-            delay,
-            stagger,
-            ease: "expo.out",
-            scrollTrigger: intro ? undefined : { trigger: el, start, once: true },
-          });
-        });
+        const cancel = gate.when(
+          contextSafe(() => {
+            gsap.to(targets, {
+              opacity: 1,
+              y: 0,
+              duration: 1.4,
+              delay,
+              stagger,
+              ease: "expo.out",
+              scrollTrigger: intro ? undefined : { trigger: el, start, once: true },
+            });
+          }),
+        );
         return () => cancel();
       });
       return () => mm.revert();

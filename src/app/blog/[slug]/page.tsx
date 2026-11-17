@@ -40,7 +40,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-[80vh] bg-[radial-gradient(45%_55%_at_15%_0%,rgb(255_107_61/0.14),transparent_70%)]"
       />
-      <header className="container-x relative pt-[calc(var(--nav-h)+clamp(3rem,8vw,6rem))]">
+      <header className="container-x relative pt-[calc(var(--nav-h)+clamp(1.5rem,8vw,6rem))]">
         <Reveal intro y={16} className="intro-fade eyebrow flex flex-wrap items-center justify-between gap-4 text-mute">
           <TLink
             href="/blog"
@@ -59,11 +59,11 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
           mode="intro"
           stagger={0.04}
           text={meta.title}
-          className="headline mx-auto mt-[clamp(3rem,7vw,6rem)] max-w-[16ch] text-center text-[clamp(3rem,8vw,8.5rem)]"
+          className="headline mx-auto mt-[clamp(1.75rem,7vw,6rem)] max-w-[16ch] text-center text-[clamp(2.6rem,8vw,8.5rem)]"
         />
-        <Reveal intro delay={0.4} className="intro-fade mx-auto mt-10 max-w-2xl text-center">
-          <p className="text-xl leading-relaxed text-mute">{meta.excerpt}</p>
-          <ul className="mt-8 flex justify-center gap-2">
+        <Reveal intro delay={0.4} className="intro-fade mx-auto mt-6 max-w-2xl text-center md:mt-10">
+          <p className="text-lg leading-relaxed text-mute md:text-xl">{meta.excerpt}</p>
+          <ul className="mt-8 hidden justify-center gap-2 sm:flex">
             {meta.tags.map((t) => (
               <li key={t} className="eyebrow rounded-full border border-line px-3 py-2 text-mute">
                 {t}
@@ -73,7 +73,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
         </Reveal>
       </header>
 
-      <div className="container-x relative py-[clamp(4rem,9vw,8rem)]">
+      <div className="container-x relative py-[clamp(2.5rem,9vw,8rem)]">
         <Reveal className="mx-auto max-w-[68ch]" y={30}>
           <div className="prose-art" dangerouslySetInnerHTML={{ __html: html }} />
         </Reveal>

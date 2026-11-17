@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
-import "lenis/dist/lenis.css";
 import "./globals.css";
 import { site } from "@/content/site";
-import SmoothScroll from "@/components/layout/SmoothScroll";
+import ScrollManager from "@/components/layout/ScrollManager";
 import Preloader from "@/components/layout/Preloader";
 import Curtain from "@/components/layout/Curtain";
 import Cursor from "@/components/layout/Cursor";
@@ -39,10 +38,11 @@ export const viewport: Viewport = {
 };
 
 /**
- * Runs before first paint: marks JS as available (enables intro states) and
- * skips the preloader for returning visitors in this session / reduced motion.
+ * Runs before first paint: marks JS as available (enables intro states), skips the
+ * preloader for returning visitors in this session / reduced motion, and holds the
+ * scroll while the preloader is up (released by the preloader, or after 9s at worst).
  */
-const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(sessionStorage.getItem('intro-seen'))d.setAttribute('data-seen','')}catch(e){}if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)d.setAttribute('data-seen','')})();`;
+const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(sessionStorage.getItem('intro-seen'))d.setAttribute('data-seen','')}catch(e){}if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)d.setAttribute('data-seen','');if(!d.hasAttribute('data-seen')){d.classList.add('scroll-locked');setTimeout(function(){if(!d.hasAttribute('data-seen'))d.classList.remove('scroll-locked')},9000)}})();`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -54,13 +54,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#content" className="skip-link">
           Skip to content
         </a>
-        <SmoothScroll />
+        <ScrollManager />
         <Preloader name={site.name} role={site.role} />
         <Curtain />
         <Nav />
         <main
           id="content"
-          className="relative z-10 overflow-clip rounded-b-[clamp(1.75rem,4vw,4rem)] bg-ink shadow-[0_50px_100px_-20px_rgb(0_0_0/0.8)]"
+          className="relative z-10 rounded-b-[clamp(1.75rem,4vw,4rem)] bg-ink shadow-[0_50px_100px_-20px_rgb(0_0_0/0.8)]"
         >
           {children}
         </main>

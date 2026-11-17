@@ -26,17 +26,17 @@ export default function Footer() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_60%_at_15%_110%,rgb(255_107_61/0.20),transparent_70%),radial-gradient(45%_50%_at_95%_100%,rgb(138_108_255/0.18),transparent_70%)]"
         />
-        <div className="container-x relative flex min-h-svh flex-col justify-between gap-20 pb-6 pt-[clamp(8rem,16vh,12rem)]">
+        <div className="container-x relative flex flex-col justify-between gap-12 pb-5 pt-16 md:gap-20 md:pt-[clamp(8rem,16vh,12rem)] lg:min-h-svh">
           <div>
             <SectionLabel index="05" label="Contact" />
-            <p className="mt-10 text-lg text-mute md:text-xl">{site.contact.kicker}</p>
-            <div className="mt-4 grid items-end gap-10 lg:grid-cols-12">
+            <p className="mt-10 hidden text-lg text-mute md:block md:text-xl">{site.contact.kicker}</p>
+            <div className="mt-5 grid items-end gap-10 md:mt-4 lg:grid-cols-12">
               <RevealText
                 as="h2"
                 text={site.contact.title}
-                className="headline text-[clamp(3rem,7.4vw,8.5rem)] lg:col-span-9"
+                className="headline text-[clamp(2.6rem,7.4vw,8.5rem)] lg:col-span-9"
               />
-              <div className="lg:col-span-3 lg:justify-self-end">
+              <div className="hidden lg:col-span-3 lg:block lg:justify-self-end">
                 <Magnetic strength={0.4}>
                   <a href={`mailto:${site.email}`} className="btn-circle" data-cursor-label="Say hi">
                     <span className="flex flex-col items-center gap-1">
@@ -47,13 +47,37 @@ export default function Footer() {
                 </Magnetic>
               </div>
             </div>
-            <div className="mt-10">
+            <div className="mt-7 flex flex-col items-start gap-5 md:mt-10">
+              <a href={`mailto:${site.email}`} className="btn-pill is-solid lg:hidden">
+                Get in touch <ArrowUpRight className="size-4" />
+              </a>
               <CopyEmail email={site.email} />
             </div>
           </div>
 
           <div>
-            <div className="grid grid-cols-2 gap-8 border-t border-line pt-8 md:grid-cols-4">
+            {/* phones: everything in two compact rows */}
+            <div className="flex flex-col gap-4 border-t border-line pt-6 md:hidden">
+              <ul className="flex flex-wrap gap-x-4 gap-y-2 text-[0.92rem]">
+                {site.socials.map((s) => (
+                  <li key={s.label}>
+                    <a href={s.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1">
+                      {s.label}
+                      <ArrowUpRight className="size-3 text-mute" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex items-center justify-between gap-4 text-[0.9rem] text-mute">
+                <span>
+                  {site.location} · <Clock timeZone={site.timeZone} className="tabular-nums text-bone" />
+                </span>
+                <BackToTop compact />
+              </div>
+            </div>
+
+            {/* tablet & desktop */}
+            <div className="hidden grid-cols-4 gap-8 border-t border-line pt-8 md:grid">
               <div>
                 <p className="eyebrow text-dim">Socials</p>
                 <ul className="mt-4 space-y-2">
@@ -91,7 +115,7 @@ export default function Footer() {
                   Local time <Clock timeZone={site.timeZone} className="tabular-nums text-bone" />
                 </p>
               </div>
-              <div className="flex flex-col items-start justify-between gap-6 md:items-end">
+              <div className="flex flex-col items-end justify-between gap-6">
                 <div className="eyebrow flex items-center gap-3 text-mute">
                   <span className="pulse-dot" /> {site.availability}
                 </div>
@@ -103,9 +127,9 @@ export default function Footer() {
 
             <div className="eyebrow flex flex-wrap justify-between gap-4 text-dim">
               <span>
-                © <Year /> {site.name}. All rights reserved.
+                © <Year /> {site.name}
               </span>
-              <span>Designed & built with obsessive care</span>
+              <span className="hidden md:inline">Designed & built with obsessive care</span>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { gate } from "@/lib/gate";
-import { getLenis } from "@/lib/lenis";
+import { setScrollLock } from "@/lib/scroll";
 
 /**
  * First-visit intro: a counter runs to 100 while the name rises in,
@@ -27,7 +27,7 @@ export default function Preloader({ name, role }: { name: string; role: string }
     }
 
     html.classList.add("is-loading");
-    getLenis()?.stop();
+    setScrollLock("preloader", true);
     const letters = el.querySelectorAll(".pl-letter");
     const fades = el.querySelectorAll(".pl-fade");
     const n = { v: 0 };
@@ -38,7 +38,7 @@ export default function Preloader({ name, role }: { name: string; role: string }
       } catch {}
       html.classList.remove("is-loading");
       html.setAttribute("data-seen", "");
-      getLenis()?.start();
+      setScrollLock("preloader", false);
       gate.open();
     };
 

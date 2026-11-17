@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { gate } from "@/lib/gate";
 import { registerCurtain } from "@/lib/curtain";
-import { getLenis } from "@/lib/lenis";
+import { setScrollLock } from "@/lib/scroll";
 
 /**
  * Page-transition curtain. TLink calls cover(), which sweeps a panel up over the
@@ -28,18 +28,16 @@ export default function Curtain() {
       if (!el || !covered.current) return;
       covered.current = false;
       window.clearTimeout(safety.current);
+      setScrollLock("curtain", false);
       if (window.location.hash) {
         const target = document.querySelector(decodeURIComponent(window.location.hash));
         if (target) {
           const top = target.getBoundingClientRect().top + window.scrollY;
           window.scrollTo(0, top);
-          getLenis()?.scrollTo(top, { immediate: true, force: true });
         }
       } else {
         window.scrollTo(0, 0);
-        getLenis()?.scrollTo(0, { immediate: true, force: true });
       }
-      getLenis()?.start();
       ScrollTrigger.refresh();
       gate.open();
       if (reduce) {
@@ -60,7 +58,7 @@ export default function Curtain() {
           if (!el) return resolve();
           if (label.current) label.current.textContent = text ?? "";
           gate.close();
-          getLenis()?.stop();
+          setScrollLock("curtain", true);
           covered.current = true;
           // never leave the screen covered if navigation stalls
           safety.current = window.setTimeout(reveal, 6000);

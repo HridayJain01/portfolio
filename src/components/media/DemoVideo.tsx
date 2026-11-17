@@ -6,9 +6,9 @@ import { Expand } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 
 /**
- * A muted, looping demo clip that only plays while on screen.
- * If the file is missing (or fails to load) it falls back to generative art,
- * so you can wire up paths before the videos exist.
+ * A muted, looping demo clip. It starts downloading shortly before it scrolls into
+ * view and only plays while it's substantially visible, so pages with many videos
+ * stay light. Without a file (or if it fails to load) it shows generative art.
  */
 export default function DemoVideo({
   src,
@@ -19,6 +19,7 @@ export default function DemoVideo({
   label,
   variant = "window",
   expandable = false,
+  preload = "none",
   className,
 }: {
   src?: string;
@@ -29,6 +30,8 @@ export default function DemoVideo({
   label?: string;
   variant?: "window" | "portrait" | "plain";
   expandable?: boolean;
+  /** "none" (default) waits until the video is near the viewport; use "auto" above the fold. */
+  preload?: "none" | "metadata" | "auto";
   className?: string;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -39,7 +42,15 @@ export default function DemoVideo({
     const v = ref.current;
     if (!v) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const io = new IntersectionObserver(
+    // start fetching a little before it arrives on screen
+    const near = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && v.preload === "none") v.preload = reduce ? "metadata" : "auto";
+      },
+      { rootMargin: "300px 0px" },
+    );
+    // play only while at least ~30% is visible
+    const vis = new IntersectionObserver(
       ([entry]) => {
         // catches load/error events that fired before hydration
         if (v.error || v.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
@@ -50,11 +61,13 @@ export default function DemoVideo({
         if (entry.isIntersecting && !reduce) v.play().catch(() => {});
         else v.pause();
       },
-      { threshold: 0.1 },
+      { threshold: 0.3 },
     );
-    io.observe(v);
+    near.observe(v);
+    vis.observe(v);
     return () => {
-      io.disconnect();
+      near.disconnect();
+      vis.disconnect();
       v.pause();
     };
   }, [src]);
@@ -87,7 +100,7 @@ export default function DemoVideo({
         muted
         loop
         playsInline
-        preload="metadata"
+        preload={preload}
         aria-label={title ? `${title}: demo video` : "Demo video"}
         onError={() => setFailed(true)}
         onLoadedData={() => setReady(true)}
