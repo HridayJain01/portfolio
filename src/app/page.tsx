@@ -17,6 +17,7 @@ export default function Home() {
         projectCount={projects.length}
         showreel={resolveMedia(site.hero.showreel)}
         showreelPoster={resolveMedia(site.hero.showreelPoster)}
+        avatar={resolveMedia(site.about.avatar)}
       />
       <Marquee items={site.marquee} sub={site.tools} />
       <Work projects={projects} />

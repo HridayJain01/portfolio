@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import ShaderCanvas from "@/components/media/ShaderCanvas";
 import DemoVideo from "@/components/media/DemoVideo";
 import Magnetic from "@/components/ui/Magnetic";
+import Avatar from "@/components/ui/Avatar";
 import TLink from "@/components/ui/TLink";
 import Roll from "@/components/ui/Roll";
 import { ArrowDown, ArrowUpRight } from "@/components/ui/icons";
@@ -17,11 +18,13 @@ export default function Hero({
   projectCount,
   showreel,
   showreelPoster,
+  avatar,
 }: {
   projectCount: number;
   /** Resolved on the server: undefined when the file isn't in /public yet. */
   showreel?: string;
   showreelPoster?: string;
+  avatar?: string;
 }) {
   const root = useRef<HTMLElement>(null);
   const title = site.hero.lines.map(plain).join(" ");
@@ -83,8 +86,10 @@ export default function Hero({
 
       <div className="container-x relative flex flex-1 flex-col justify-end pb-12 pt-8 md:justify-center md:py-10">
         <div className="hero-fade intro-fade eyebrow mb-6 flex items-center gap-3 text-bone/70 md:mb-10">
-          <span className="h-px w-10 bg-bone/40" />
-          {site.role}
+          <Avatar src={avatar} name={site.name} monogram={site.monogram} size={40} />
+          <span>
+            {site.name} <span className="text-bone/40">·</span> {site.role}
+          </span>
         </div>
 
         <h1

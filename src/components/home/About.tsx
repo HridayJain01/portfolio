@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { site } from "@/content/site";
 import { resolveMedia } from "@/lib/media";
 import SectionLabel from "@/components/ui/SectionLabel";
@@ -7,22 +6,8 @@ import Reveal from "@/components/ui/Reveal";
 import RevealText from "@/components/ui/RevealText";
 import Counter from "@/components/ui/Counter";
 import Portrait from "./Portrait";
+import Avatar from "@/components/ui/Avatar";
 import { pad } from "@/lib/utils";
-
-/** Small round portrait used on phones in place of the tall desktop portrait. */
-function Avatar({ src }: { src?: string }) {
-  return (
-    <span className="relative block size-12 overflow-hidden rounded-full ring-1 ring-line">
-      {src ? (
-        <Image src={src} alt={`Portrait of ${site.name}`} fill sizes="48px" className="object-cover" />
-      ) : (
-        <span className="grid size-full place-items-center bg-[radial-gradient(circle_at_30%_25%,#ff6b3d,#6d4dff_60%,#16161a)] serif-em text-lg text-bone">
-          {site.monogram}
-        </span>
-      )}
-    </span>
-  );
-}
 
 export default function About() {
   const { about } = site;
@@ -31,9 +16,13 @@ export default function About() {
     <section id="about" aria-labelledby="about-title" className="container-x section-pad">
       <div className="flex items-center justify-between gap-4">
         <SectionLabel index="02" label="About" />
-        <span className="lg:hidden">
-          <Avatar src={portrait} />
-        </span>
+        <Avatar
+          src={resolveMedia(about.avatar)}
+          name={site.name}
+          monogram={site.monogram}
+          size={52}
+          className="lg:hidden"
+        />
       </div>
       <h2 id="about-title" className="sr-only">
         About

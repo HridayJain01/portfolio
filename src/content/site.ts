@@ -46,8 +46,10 @@ export const site = {
   about: {
     statement:
       "I'm a developer from Mumbai who has spent six years turning *ideas into working products.* I've built across fintech, analytics and e-commerce, won two hackathons, and today I work on enterprise banking software at Oracle Financial Services. I care about clean code, fast interfaces and shipping things *people actually use.*",
-    /** Path to a portrait image in /public/images, or leave empty for the monogram placeholder. */
-    portrait: "",
+    /** Background-removed portrait (transparent PNG) in /public/images, or empty for the monogram placeholder. */
+    portrait: "/images/portrait.png",
+    /** Small round head-and-shoulders crop used on phones and in the hero. */
+    avatar: "/images/avatar.png",
     stats: [
       { value: 6, suffix: "+", label: "Years building digital products" },
       { value: 4, suffix: "", label: "Companies & clients" },
