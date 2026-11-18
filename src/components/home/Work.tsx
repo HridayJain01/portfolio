@@ -1,9 +1,10 @@
-import type { Project } from "@/content/projects";
+import { sideProjects, type Project } from "@/content/projects";
 import SectionLabel from "@/components/ui/SectionLabel";
 import RevealText from "@/components/ui/RevealText";
 import Reveal from "@/components/ui/Reveal";
 import WorkGrid from "@/components/work/WorkGrid";
 import WorkCard from "@/components/work/WorkCard";
+import SideProjects from "@/components/work/SideProjects";
 
 export default function Work({ projects }: { projects: Project[] }) {
   return (
@@ -28,6 +29,7 @@ export default function Work({ projects }: { projects: Project[] }) {
           <WorkCard key={p.slug} project={p} index={i} />
         ))}
       </WorkGrid>
+      <SideProjects items={sideProjects} />
     </section>
   );
 }
