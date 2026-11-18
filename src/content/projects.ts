@@ -224,9 +224,9 @@ export const projects: Project[] = [
     slug: "engiverse",
     title: "EngiVerse",
     tagline: "A marketplace where engineering projects get AI code reviews.",
-    category: "AI · Marketplace",
+    category: "AI · Hackathon winner",
     year: "2025",
-    role: "Developer, team project",
+    role: "Developer, hackathon team",
     stack: ["React", "TypeScript", "Supabase", "FastAPI", "Gemini"],
     accent: "#8a6cff",
     video: "/videos/engiverse.mp4",
@@ -236,11 +236,11 @@ export const projects: Project[] = [
       "Students upload their engineering projects to a shared marketplace. The platform analyses the code, generates a quality report with AI, and mentors can step in to guide.",
     challenge: "Student projects are hard to discover and rarely get structured feedback on code quality or security.",
     outcome:
-      "A React and Supabase marketplace with project uploads and a mentor area, backed by a FastAPI service that runs linters and security scanners (Pylint, Bandit, Semgrep, ESLint) and asks Gemini to turn the results into a readable report.",
+      "A React and Supabase marketplace with project uploads and a mentor area, backed by a FastAPI service that runs linters and security scanners (Pylint, Bandit, Semgrep, ESLint) and asks Gemini to turn the results into a readable report. It won the hackathon.",
     highlights: [
       { value: "4+", label: "Code-analysis tools combined" },
       { value: "AI", label: "Gemini-written project reports" },
-      { value: "Team", label: "Collaborative build" },
+      { value: "Won", label: "Hackathon winning build" },
     ],
     features: [
       "Upload a project straight from GitHub",
