@@ -26,7 +26,7 @@ export default function FitText({ text, className }: { text: string; className?:
 
   return (
     <div ref={box} className={cn("w-full overflow-hidden", className)}>
-      <span ref={line} className="block w-max whitespace-nowrap text-[18vw] leading-[0.8]">
+      <span ref={line} className="block w-max whitespace-nowrap pb-[0.14em] text-[18vw] leading-[0.8]">
         {text}
       </span>
     </div>

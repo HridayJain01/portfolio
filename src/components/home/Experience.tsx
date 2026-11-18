@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { site } from "@/content/site";
+import { linkedin, site } from "@/content/site";
 import { experience } from "@/content/experience";
 import SectionLabel from "@/components/ui/SectionLabel";
 import RevealText from "@/components/ui/RevealText";
@@ -29,14 +29,11 @@ export default function Experience() {
               <a href={site.resume} download className="btn-pill is-solid roll-trigger" data-cursor-label="PDF">
                 Download résumé <ArrowDown className="size-4" />
               </a>
-            ) : (
-              <a
-                href={`mailto:${site.email}?subject=${encodeURIComponent("Résumé request")}`}
-                className="btn-pill is-solid"
-              >
-                Request résumé <ArrowUpRight className="size-4" />
+            ) : linkedin ? (
+              <a href={linkedin} target="_blank" rel="noreferrer" className="btn-pill is-solid">
+                View LinkedIn <ArrowUpRight className="size-4" />
               </a>
-            )}
+            ) : null}
           </Magnetic>
         </Reveal>
       </div>

@@ -9,7 +9,7 @@ import TLink from "@/components/ui/TLink";
 import Roll from "@/components/ui/Roll";
 import Clock from "@/components/ui/Clock";
 import Magnetic from "@/components/ui/Magnetic";
-import { site } from "@/content/site";
+import { contact, site } from "@/content/site";
 
 const LINKS = [
   { href: "/#work", label: "Work", match: "/work" },
@@ -225,8 +225,12 @@ export default function Nav() {
           ))}
         </ul>
         <div className="relative space-y-6">
-          <a href={`mailto:${site.email}`} className="menu-fade block text-xl">
-            {site.email}
+          <a
+            href={contact.href}
+            {...(contact.external ? { target: "_blank", rel: "noreferrer" } : {})}
+            className="menu-fade block text-xl"
+          >
+            {contact.display}
           </a>
           <ul className="menu-fade flex flex-wrap gap-x-6 gap-y-2 text-mute">
             {site.socials.map((s) => (

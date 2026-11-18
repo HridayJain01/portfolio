@@ -1,4 +1,4 @@
-import { site } from "@/content/site";
+import { contact, site } from "@/content/site";
 import RevealText from "@/components/ui/RevealText";
 import Magnetic from "@/components/ui/Magnetic";
 import CopyEmail from "@/components/ui/CopyEmail";
@@ -38,7 +38,12 @@ export default function Footer() {
               />
               <div className="hidden lg:col-span-3 lg:block lg:justify-self-end">
                 <Magnetic strength={0.4}>
-                  <a href={`mailto:${site.email}`} className="btn-circle" data-cursor-label="Say hi">
+                  <a
+                    href={contact.href}
+                    {...(contact.external ? { target: "_blank", rel: "noreferrer" } : {})}
+                    className="btn-circle"
+                    data-cursor-label="Say hi"
+                  >
                     <span className="flex flex-col items-center gap-1">
                       Get in touch
                       <ArrowUpRight className="size-5" />
@@ -48,10 +53,14 @@ export default function Footer() {
               </div>
             </div>
             <div className="mt-7 flex flex-col items-start gap-5 md:mt-10">
-              <a href={`mailto:${site.email}`} className="btn-pill is-solid lg:hidden">
+              <a
+                href={contact.href}
+                {...(contact.external ? { target: "_blank", rel: "noreferrer" } : {})}
+                className="btn-pill is-solid lg:hidden"
+              >
                 Get in touch <ArrowUpRight className="size-4" />
               </a>
-              <CopyEmail email={site.email} />
+              <CopyEmail value={contact.display} fallbackHref={contact.fallbackHref} kind={contact.kind} />
             </div>
           </div>
 
