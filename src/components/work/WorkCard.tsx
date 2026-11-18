@@ -17,7 +17,7 @@ export default function WorkCard({ project: p, index }: { project: Project; inde
         className="group block"
         style={{ "--a": p.accent } as CSSProperties}
       >
-        <div className="relative aspect-[16/10] overflow-hidden rounded-[var(--radius-card)] bg-ink-2 ring-1 ring-line md:aspect-[4/3]">
+        <div className="relative aspect-video overflow-hidden rounded-[var(--radius-card)] bg-ink-2 ring-1 ring-line">
           <div className="work-media absolute inset-x-0 -inset-y-[6%]">
             <div className="absolute inset-0 transition-transform duration-[1.2s] ease-out-expo group-hover:scale-[1.05]">
               <DemoVideo

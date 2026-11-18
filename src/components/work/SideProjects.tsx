@@ -26,7 +26,7 @@ export default function SideProjects({ items }: { items: SideProject[] }) {
         {items.map((p) => {
           const card: ReactNode = (
             <>
-              <div className="relative aspect-[16/10] overflow-hidden rounded-[clamp(0.9rem,1.6vw,1.5rem)] bg-ink-2 ring-1 ring-line">
+              <div className="relative aspect-video overflow-hidden rounded-[clamp(0.9rem,1.6vw,1.5rem)] bg-ink-2 ring-1 ring-line">
                 <div className="absolute inset-0 transition-transform duration-700 ease-out-expo group-hover:scale-[1.05]">
                   <DemoVideo
                     src={resolveMedia(p.video)}

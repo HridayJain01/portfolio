@@ -24,6 +24,9 @@ export default function CaseStudy({
   index: number;
   total: number;
 }) {
+  const clips = (p.clips ?? [])
+    .map((c) => ({ ...c, src: resolveMedia(c.src), poster: resolveMedia(c.poster) }))
+    .filter((c): c is typeof c & { src: string } => Boolean(c.src));
   return (
     <article style={{ "--a": p.accent } as CSSProperties}>
       {/* ── Header ── */}
@@ -142,12 +145,12 @@ export default function CaseStudy({
         </Reveal>
       </section>
 
-      {/* ── Feature clips ── */}
-      {p.clips && p.clips.length > 0 && (
+      {/* ── Features (+ optional clips: only ones whose files exist are shown) ── */}
+      {p.features.length > 0 && (
         <section aria-labelledby="clips" className="container-x section-pad">
           <div className="grid gap-6 md:gap-10 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-7">
-              <SectionLabel index="02" label="In motion" />
+              <SectionLabel index="02" label={clips.length ? "In motion" : "Features"} />
               <RevealText
                 id="clips"
                 text="Feature *highlights*"
@@ -167,31 +170,32 @@ export default function CaseStudy({
               ))}
             </Reveal>
           </div>
-          <Reveal
-            className="mt-8 grid gap-6 md:mt-[clamp(3rem,6vw,5rem)] md:grid-cols-2 md:gap-[clamp(1rem,2vw,1.75rem)]"
-            stagger={0.15}
-            y={80}
-          >
-            {p.clips.map((c, i) => (
-              <figure key={c.src} data-reveal-item className={i % 2 === 1 ? "md:mt-[clamp(3rem,8vw,8rem)]" : ""}>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-card)] bg-ink-2 ring-1 ring-line">
-                  <DemoVideo
-                    src={resolveMedia(c.src)}
-                    poster={resolveMedia(c.poster)}
-                    accent={p.accent}
-                    seed={`${p.slug}-${i}`}
-                    title={c.caption}
-                    label="Clip coming soon"
-                    expandable
-                  />
-                </div>
-                <figcaption className="mt-3 flex items-baseline gap-3 md:mt-4 md:gap-4">
-                  <span className="eyebrow text-dim">{pad(i + 1)}</span>
-                  <span className="text-bone/85 md:text-lg">{c.caption}</span>
-                </figcaption>
-              </figure>
-            ))}
-          </Reveal>
+          {clips.length > 0 && (
+            <Reveal
+              className="mt-8 grid gap-6 md:mt-[clamp(3rem,6vw,5rem)] md:grid-cols-2 md:gap-[clamp(1rem,2vw,1.75rem)]"
+              stagger={0.15}
+              y={80}
+            >
+              {clips.map((c, i) => (
+                <figure key={c.src} data-reveal-item className={i % 2 === 1 ? "md:mt-[clamp(3rem,8vw,8rem)]" : ""}>
+                  <div className="relative aspect-video overflow-hidden rounded-[var(--radius-card)] bg-ink-2 ring-1 ring-line">
+                    <DemoVideo
+                      src={c.src}
+                      poster={c.poster}
+                      accent={p.accent}
+                      seed={`${p.slug}-${i}`}
+                      title={c.caption}
+                      expandable
+                    />
+                  </div>
+                  <figcaption className="mt-3 flex items-baseline gap-3 md:mt-4 md:gap-4">
+                    <span className="eyebrow text-dim">{pad(i + 1)}</span>
+                    <span className="text-bone/85 md:text-lg">{c.caption}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </Reveal>
+          )}
         </section>
       )}
 
