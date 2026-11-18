@@ -9,18 +9,18 @@
  */
 
 export const site = {
-  name: "Your Name",
+  name: "Hriday Jain",
   /** Two or three letters, used for the favicon-style mark and the portrait fallback. */
-  monogram: "YN",
+  monogram: "HJ",
   role: "Product Designer & Engineer",
   /** Your production URL, used for SEO and social cards. */
-  url: "https://your-domain.com",
+  url: "https://portfolio-nu-silk-vcg1sjrwmn.vercel.app",
   email: "hello@your-domain.com",
   location: "Your City, Country",
   /** IANA time zone for the live clock in the nav, e.g. "Asia/Kolkata", "Europe/London". */
   timeZone: "UTC",
   availability: "Available for new projects",
-  description: "Portfolio of Your Name, a product designer and engineer crafting fast, beautiful digital products.",
+  description: "Portfolio of Hriday Jain, a product designer and engineer crafting fast, beautiful digital products.",
 
   hero: {
     lines: ["I build *digital*", "products [reel] people", "*love* to use."],
